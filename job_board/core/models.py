@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from multiselectfield import MultiSelectField
 
@@ -15,9 +17,20 @@ LOCATION_CHOICES = [
 ]
 
 
+# Recommended to create custom user even if no immediate need to
+# define additional fields as huge pain later otherwise:
+# https://docs.djangoproject.com/en/3.2/topics/auth/customizing/#using-a-custom-user-model-when-starting-a-project
+class User(AbstractUser):
+    pass
+
+    @property
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
+
 class Professional(models.Model):
-    full_name = models.CharField(max_length=254)
-    email = models.EmailField(max_length=254)
+    # https://docs.djangoproject.com/en/3.2/topics/auth/customizing/#extending-the-existing-user-model
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=254)
     daily_rate = models.IntegerField(null=True)
     daily_rate_flexibility = models.IntegerField(null=True)
@@ -26,10 +39,11 @@ class Professional(models.Model):
     location = MultiSelectField(choices=LOCATION_CHOICES)
 
     def __str__(self):
-        return self.full_name
+        return self.user.full_name
 
 
 class Business(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=254)
     website = models.URLField(max_length=254)
 
@@ -43,7 +57,7 @@ class Job(models.Model):
     daily_rate_flexibility = models.IntegerField(null=True)
     availability = MultiSelectField(choices=AVAILABILITY_CHOICES)
     location = MultiSelectField(choices=LOCATION_CHOICES)
-    #skills
+    skills = models.CharField(max_length=500) # Assuming comma separated for now
     posted_by = models.ForeignKey(
             'Business',
             on_delete=models.CASCADE,
@@ -64,4 +78,4 @@ class Application(models.Model):
     )
 
     def __str__(self):
-        return f"Application from {self.applicant.full_name} as {job.title}"
+        return f"Application from {self.applicant.user.full_name} as {job.title}"
