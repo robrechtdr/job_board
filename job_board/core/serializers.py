@@ -3,18 +3,6 @@ from rest_framework import serializers
 from .models import Professional, Business, Job, Application
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'groups']
-
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Group
-        fields = ['url', 'name']
-
-
 class ProfessionalSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Professional
@@ -27,7 +15,7 @@ class BusinessSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
 
-class JobSerializer(serializers.HyperlinkedModelSerializer):
+class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
         fields = '__all__'

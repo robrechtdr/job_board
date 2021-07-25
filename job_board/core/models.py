@@ -33,10 +33,12 @@ class Professional(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=254)
     daily_rate = models.IntegerField(null=True)
-    daily_rate_flexibility = models.IntegerField(null=True)
+    daily_rate_flexibility = models.DecimalField(max_digits=3, decimal_places=2, null=True)
     # https://stackoverflow.com/questions/27440861/django-model-multiplechoice
     availability = MultiSelectField(choices=AVAILABILITY_CHOICES)
     location = MultiSelectField(choices=LOCATION_CHOICES)
+    created = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return self.user.full_name
@@ -46,6 +48,8 @@ class Business(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     company_name = models.CharField(max_length=254)
     website = models.URLField(max_length=254)
+    created = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return self.company_name
@@ -54,7 +58,7 @@ class Business(models.Model):
 class Job(models.Model):
     title = models.CharField(max_length=254)
     daily_rate = models.IntegerField(null=True)
-    daily_rate_flexibility = models.IntegerField(null=True)
+    daily_rate_flexibility = models.DecimalField(max_digits=3, decimal_places=2, null=True)
     availability = MultiSelectField(choices=AVAILABILITY_CHOICES)
     location = MultiSelectField(choices=LOCATION_CHOICES)
     skills = models.CharField(max_length=500) # Assuming comma separated for now
@@ -62,6 +66,8 @@ class Job(models.Model):
             'Business',
             on_delete=models.CASCADE,
     )
+    created = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return self.title
@@ -76,6 +82,8 @@ class Application(models.Model):
         'Professional',
         on_delete=models.CASCADE,
     )
+    created = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return f"Application from {self.applicant.user.full_name} as {job.title}"

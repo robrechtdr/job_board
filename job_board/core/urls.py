@@ -1,15 +1,14 @@
 from django.urls import path, include
 from rest_framework import routers
-from .views import UserViewSet, GroupViewSet, ProfessionalViewSet
+from .views import JobListView, ProfessionalViewSet
 
 
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'groups', GroupViewSet)
 router.register(r'professionals', ProfessionalViewSet)
 
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('jobs/', JobListView.as_view()),
+    path('auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
