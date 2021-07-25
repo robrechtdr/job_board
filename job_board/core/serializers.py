@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Professional, Business, Job, Application
 
 
-class ProfessionalSerializer(serializers.HyperlinkedModelSerializer):
+class ProfessionalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Professional
         fields = '__all__'
