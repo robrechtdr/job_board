@@ -60,12 +60,12 @@ class Professional(models.Model):
             # I don't really like this error here; but we need to mark it
             # somehow to be able to raise a client error instead of a 500.
             # when used from a view.
-            raise ImproperCallConditionError(f'{self} already applied for {job}')
+            raise ImproperCallConditionError(f'{self} already applied for {job} job')
 
         today = datetime.date.today()
         applications = Application.objects.filter(job=job, created__date=today)
         if applications.count() >= 5:
-            raise ImproperCallConditionError(f'Maximum applications reached for today on {job}')
+            raise ImproperCallConditionError(f'Maximum applications reached for today on {job} job')
 
         application = Application(job=job, applicant=self)
         application.save()

@@ -46,7 +46,7 @@ class JobApplyView(APIView):
         try:
             application = user.professional.apply(job)
         except ImproperCallConditionError as error:
-            return Response(error, status=status.HTTP_403_FORBIDDEN)
+            return Response(str(error), status=status.HTTP_403_FORBIDDEN)
 
         serializer = ApplicationSerializer(application)
         # https://www.django-rest-framework.org/api-guide/serializers/#saving-instances
