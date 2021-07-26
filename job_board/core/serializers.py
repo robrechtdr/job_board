@@ -9,7 +9,7 @@ class ProfessionalSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class BusinessSerializer(serializers.HyperlinkedModelSerializer):
+class BusinessSerializer(serializers.ModelSerializer):
     class Meta:
         model = Business
         fields = '__all__'
@@ -21,7 +21,7 @@ class JobSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ApplicationSerializer(serializers.HyperlinkedModelSerializer):
+class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
         fields = '__all__'
