@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-z7@qq^)gqk1wvdori55!s($o@u2^t@gsvcxlur#7f4semmgk%n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# To enable server access from outside docker
+ALLOWED_HOSTS = ["0.0.0.0"]
 
 
 # Application definition
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
+    'django_extensions',
     'multiselectfield',
     'rest_framework',
     'rest_framework.authtoken'
@@ -79,11 +81,14 @@ WSGI_APPLICATION = 'job_board.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
