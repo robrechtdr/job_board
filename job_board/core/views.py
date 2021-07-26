@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 
 from rest_framework import generics, permissions, filters, status
-from rest_framework.views import APIView
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
+from rest_framework.views import APIView
 
 from .errors import ImproperCallConditionError
 from .models import Job, Professional, Application
@@ -79,3 +80,16 @@ class JobApplicantsView(APIView):
         professionals = job.get_applicants()
         serializer = ProfessionalSerializer(professionals, many=True)
         return Response(serializer.data)
+
+
+# https://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/#creating-an-endpoint-for-the-root-of-our-api
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'job-list-search': reverse('job_search', request=request, format=format),
+        # Need to pass on a concrete case; entity might not be created yet and possible 404.
+        'job-detail': reverse('job_detail', request=request, format=format, kwargs={'pk': 1}),
+        'job-applicant-list': reverse('job_applicants', request=request, format=format, kwargs={'pk':1}),
+        'job-apply': reverse('job_apply', request=request, format=format),
+        'professional-list-search': reverse('professional_search', request=request, format=format),
+    })
