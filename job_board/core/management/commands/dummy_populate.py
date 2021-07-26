@@ -16,14 +16,6 @@ class Command(BaseCommand):
         """
         Populate dummy db entries for convenience.
         """
-        import subprocess
-        #subprocess.call('rm db.sqlite3', shell=True)
-        #subprocess.call('python manage.py reset_db', shell=True)
-        #subprocess.call('rm -r core/migrations', shell=True)
-        #subprocess.call('rm -r core/__pychache__', shell=True)
-        #subprocess.call('python manage.py makemigrations core', shell=True)
-        #subprocess.call('python manage.py migrate', shell=True)
-
         try:
             # Admin
             admin = User.objects.create_superuser(
